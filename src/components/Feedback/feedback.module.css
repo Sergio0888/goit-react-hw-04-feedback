@@ -1,0 +1,18 @@
+.btn {
+    font-size: 18px;
+
+    padding: 4px 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.btn::first-letter {
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    background-color: rgb(66, 102, 243);
+}
