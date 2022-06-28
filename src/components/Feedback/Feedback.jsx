@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const FeedbackOptions = ({ options , onLeaveFeedback }) => {
     return (
         <>
-        <button className={styles.btn} onClick={() => {options.handleClick(onLeaveFeedback)}}>{onLeaveFeedback}</button>
+        <button className={styles.btn} onClick={() => {options(onLeaveFeedback)}}>{onLeaveFeedback}</button>
         </>
     );
 };
@@ -12,6 +12,6 @@ const FeedbackOptions = ({ options , onLeaveFeedback }) => {
 export default FeedbackOptions;
 
 FeedbackOptions.propTypes = {
-    options: PropTypes.object.isRequired,
+    options: PropTypes.func.isRequired,
     onLeaveFeedback: PropTypes.string.isRequired
 }
