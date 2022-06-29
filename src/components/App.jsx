@@ -12,22 +12,23 @@ class App extends Component {
     good: 0,
     neutral: 0,
     bad: 0,
-    total: 0,
-    positivePercentage: 0
   };
 
 countTotalFeedback() {
-  const totalFeedback = this.state.total + 1;
-  this.setState({total: totalFeedback});
-  return
+  const { good, neutral, bad } = this.state;
+  const total = good + neutral + bad;
+  return total
 };
 
 countPositiveFeedbackPercentage() {
-  return this.setState(prevState => {
-    const percentage = Math.floor(prevState.good / prevState.total * 100);
-    
-    return prevState.positivePercentage = percentage;
-  })
+  const { good, neutral, bad } = this.state;
+  const total = good + neutral + bad;
+
+  if (total === 0) {
+    return 0
+  }
+  const percentage = Math.floor(good / (good + neutral + bad) * 100);
+  return percentage
 };
 
 
@@ -39,36 +40,27 @@ handleClick = (propName) => {
     }
    });
    
-   this.countTotalFeedback()
-   this.countPositiveFeedbackPercentage();
 };
 
 render() {
-  
   const {handleClick} = this;
+  const { good, neutral, bad } = this.state;
+  const total = good + neutral + bad;
 
-  if (this.state.total === 0) {
+  
     return (
         <Section title="Please leave feedback">
-            <FeedbackOptions options={handleClick} onLeaveFeedback={'good'} />
-            <FeedbackOptions options={handleClick} onLeaveFeedback={'neutral'} />
-            <FeedbackOptions options={handleClick} onLeaveFeedback={'bad'} />
+            <FeedbackOptions options={handleClick} onLeaveFeedback={this.state} />
             <h2 className={styles.title}>Statistics</h2>
-            <Notification message="There is no feedback" />
+            {total > 0 ? (
+            <Statistics good={this.state.good} neutral={this.state.neutral} bad={this.state.bad} total={this.countTotalFeedback()} positivePercentage={this.countPositiveFeedbackPercentage()} />
+            ) : (
+              <Notification message="There is no feedback" />
+            )}   
         </Section>
-    )
-  }
-  return (
-    <Section title="Please leave feedback">
-            <FeedbackOptions options={handleClick} onLeaveFeedback={'good'} />
-            <FeedbackOptions options={handleClick} onLeaveFeedback={'neutral'} />
-            <FeedbackOptions options={handleClick} onLeaveFeedback={'bad'} />
-            <h2 className={styles.title}>Statistics</h2>
-            <Statistics good={this.state.good} neutral={this.state.neutral} bad={this.state.bad} total={this.state.total} positivePercentage={this.state.positivePercentage} />
-    </Section>
-    )
-  }
-}
+    );
+  };
+};
 
 export default App;
 
